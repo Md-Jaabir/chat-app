@@ -1,11 +1,11 @@
 import fns from './utils.js';
 import fireBaseSetup from './firebase-setup.js';
-let {db,get,set,ref,auth,child}=fireBaseSetup;
+let {db,get,set,ref,auth,child,onValue}=fireBaseSetup;
 let {goTo,showError,closeError,loading,hideLoading}=fns;
 let logoutButton=document.querySelector(".logout");
 let conversationContainer=document.querySelector(".conversations");
 let user;
-let conversations;
+let conversations=JSON.parse(sessionStorage.getItem("conversations"));
 let userId=localStorage.getItem("userId");
 document.querySelector(".new-conv").onclick=()=>{goTo('./new-conv.html')}
 logoutButton.addEventListener("click",signout)
@@ -26,8 +26,7 @@ function checkUser(){
   get(child(ref(db),`users/${userId}`)).then(snapshot=>{
     if(snapshot.exists()){
       user=snapshot.val();
-      console.log(user);
-      localStorage.setItem("user",JSON.stringify(user));
+      localStorage.setItem("user",JSON.stringify({id:user.id,name:user.name}));
       hideLoading();
       getConversations();
     }else{
@@ -43,11 +42,15 @@ function checkUser(){
 function signout(){
   localStorage.removeItem("user");
   localStorage.removeItem("userId");
+  sessionStorage.removeItem("conversations")
   goTo("./signin.html")
 }
 
 function getConversations(){
-  console.log("users/"+userId.toString()+"/conversations");
+  if(conversations){
+    fetchConversations();
+    return;
+  }
   get(child(ref(db),"users/"+userId.toString()+"/conversations")).then(snapshot=>{
     if(snapshot.exists()){
       conversations=snapshot.val();
@@ -56,13 +59,12 @@ function getConversations(){
         return;
       }
       fetchConversations();
-      console.log(conversations);
+      checkForUpdates();
+      sessionStorage.setItem("conversations",JSON.stringify(conversations));
     }else{
-      document.querySelector(".conversations .loading-text").innerHTML="No conversation yet"
-        return;
-      console.log(err);
-      showError("Something went wrong!!!!")
+      document.querySelector(".conversations .loading-text").innerHTML="No conversation yet";
       hideLoading();
+      return;
     }
   }).catch(err=>{
     console.log(err);
@@ -72,6 +74,7 @@ function getConversations(){
 }
 
 function fetchConversations(){
+  console.log("Updating conversations...");
   let conversationArr=Object.values(conversations);
   conversationArr=conversationArr.reverse();
   conversationContainer.innerHTML=conversationArr.map(conversation=>{
@@ -83,8 +86,29 @@ function fetchConversations(){
       </div>
       <div class="detail">
         <h3 class="name">${otherUser.name}</h3>
-        <p>🔴 Active now</p>
+        <p>Not active</p>
       </div>
     </div>`;
   }).join("");
+  document.querySelectorAll(".conversation").forEach(button=>{
+    button.addEventListener("click",(event)=>{
+      goTo(`./conversation.html?id=${event.target.id}`);
+    });
+  });
+}
+
+
+function checkForUpdates(){
+  let conversationsRef=ref(db,`users/${userId}/conversations`);
+  onValue(conversationsRef,(snapshot)=>{
+    let updatedConv=snapshot.val();
+    console.log("changed...");
+    conversations=updatedConv;
+    fetchConversations();
+    sessionStorage.setItem("conversations",JSON.stringify(conversations));
+  },(err)=>{
+    hideLoading();
+    showError("Something went wrong!!!");
+    console.log(err);
+  });
 }

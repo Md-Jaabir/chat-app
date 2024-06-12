@@ -4,7 +4,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/fireba
 
   import { getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js'
 
-  import { getDatabase,get,set,ref,child,push,update} from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js'
+  import { getDatabase,get,set,ref,child,push,update,onValue} from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js'
 
   const firebaseConfig = {
 
@@ -34,4 +34,4 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/fireba
 
   const auth=getAuth(app);
   
- export default {db,get,set,ref,auth,child,push,update,signInWithEmailAndPassword,createUserWithEmailAndPassword};
+ export default {db,get,set,ref,onValue,auth,child,push,update,signInWithEmailAndPassword,createUserWithEmailAndPassword};

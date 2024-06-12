@@ -1,12 +1,14 @@
 import fns from './utils.js';
 import fireBaseSetup from './firebase-setup.js';
-let {db,get,set,ref,auth,child,push,update}=fireBaseSetup;
+let {db,get,set,ref,auth,child,push,update,onValue}=fireBaseSetup;
 let {goTo,showError,closeError,loading,hideLoading}=fns;
 let usersCont=document.querySelector(".users");
 let user=JSON.parse(localStorage.getItem("user"));
 let userId=localStorage.getItem("userId");
+let conversations=JSON.parse(sessionStorage.getItem("conversations"));
 let users;
 checkUser();
+checkForUpdates();
 document.querySelector(".back").addEventListener("click",()=>{goTo("./index.html")});
 
 function checkUser(){
@@ -129,4 +131,18 @@ function createConversation(event){
     hideLoading();
     showError("Something went wrong!!!");
   })
+}
+
+function checkForUpdates(){
+  let conversationsRef=ref(db,`users/${userId}/conversations`);
+  onValue(conversationsRef,(snapshot)=>{
+    let updatedConv=snapshot.val();
+    console.log("changed...");
+    conversations=updatedConv;
+    sessionStorage.setItem("conversations",JSON.stringify(conversations));
+  },(err)=>{
+    hideLoading();
+    showError("Something went wrong!!!");
+    console.log(err);
+  });
 }
