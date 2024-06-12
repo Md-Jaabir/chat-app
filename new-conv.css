@@ -1,0 +1,96 @@
+.top-bar{
+  position: sticky;
+  top: 0;
+  background: white;
+  display: flex;
+  padding: 20px 25px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-bar i{
+  font-size: 25px;
+}
+
+.top-bar h2{
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+.top-bar h2 i{
+  font-size: 30px;
+  padding: 0;
+  margin: 0;
+}
+
+form.search{
+  position: sticky;
+  top: 85px;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.search input{
+  padding: 11px 22px;
+  width: 85%;
+  background: #dce1e2;
+  outline: none;
+  border: none;
+  border-radius:20px ;
+}
+
+.users{
+  display: flex;
+  flex-direction: column;
+  padding: 15px 0;
+  margin-top: 10px;
+  height: fit-content;
+  position: relative;
+  min-height: 60vh;
+}
+
+.users .loading-text{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  
+}
+
+.user{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding:10px 25px;
+  position: relative;
+}
+
+
+.user button{
+  position: absolute;
+  right: 25px;
+  padding: 8px 8px;
+  outline: none;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.user .profile-image{
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-image img{
+  width: 100%;
+}
+

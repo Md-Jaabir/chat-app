@@ -1,0 +1,99 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-family: "Josefin Sans"
+}
+
+body{
+  min-height: 100vh;
+  width: 100vw;
+}
+
+body.signup{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-image:linear-gradient(#4CA1AF,#C4E0E5) ;
+}
+
+form.signup{
+  display: flex;
+  flex-direction: column;
+  gap:10px;
+  margin-top: 15px;
+  width: 80vw;
+}
+
+.signup input{
+  padding: 10px 7px;
+  outline: none;
+  border: 1px solid #333;
+}
+
+.signup button{
+  outline: none;
+  padding: 10px 7px;
+  margin-top: 20px;
+}
+
+.already{
+  margin-top: 15px;
+}
+
+.error{
+  position: absolute;
+  top: -60px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  width: calc(100% - 40px);
+  background: #ee8f9a;
+  transition: .6s linear;
+  z-index: 5;
+}
+
+.error .close{
+  background: transparent;
+  outline: none;
+  border: none;
+  width: fit-content;
+  height: fit-content;
+  padding: 0;
+  margin: 0;
+}
+
+input.err{
+  border: 2px solid #e50404;
+}
+
+.loading{
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 35px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff69;
+  z-index: 5;
+}
+
+@keyframes spin{
+  50%{
+    transform: rotate(180deg);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
+.loading i{
+  animation: spin .5s linear infinite;
+}
+

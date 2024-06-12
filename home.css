@@ -1,0 +1,99 @@
+.top-bar{
+  position: sticky;
+  top: 0;
+  background: white;
+  display: flex;
+  padding: 20px 25px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-bar i{
+  font-size: 25px;
+}
+
+.top-bar h2{
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+.top-bar h2 i{
+  font-size: 30px;
+  padding: 0;
+  margin: 0;
+}
+
+.top-bar .buttons{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+form.search{
+  position: sticky;
+  top: 85px;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.search input{
+  padding: 11px 22px;
+  width: 85%;
+  background: #dce1e2;
+  outline: none;
+  border: none;
+  border-radius:20px ;
+}
+
+.conversations{
+  display: flex;
+  flex-direction: column;
+  padding: 15px 0;
+  margin-top: 15px;
+  height: fit-content;
+  position: relative;
+  min-height: 60vh;
+}
+
+.conversations .loading-text{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.conversation{
+  display: flex;
+  gap: 15px;
+  padding:10px 25px;
+}
+
+.conversation .profile-image{
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-image img{
+  width: 100%;
+}
+
+.conversation .detail{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.conversation:active{
+  background: #e8eaeb;
+  transition: .5s linear;
+}
