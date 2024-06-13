@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  <script src="./js/fontawesome.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="conversation.css">
+  <title>Chat</title>
+</head>
+<body class="conversation-cont">
+  <div class="loading">
+    <i class="fa-regular fa-compass"></i>
+  </div>
+  <div class="error">
+   <p class="msg">Something went wrong</p> 
+   <button class="close" >
+     <i class="fa-solid fa-close"></i>
+   </button>
+  </div>
+  <div class="top-bar">
+    <div class="conversation">
+      <div class="profile-image">
+        <img load="lazy" src="./assets/housefull 3.png">
+      </div>
+      <div class="detail">
+        <h3 class="name">Jaabir</h3>
+        <p>Not active</p>
+      </div>
+    </div>
+    <i class="back fa-solid fa-circle-xmark"></i>
+  </div>
+  <div class="messages">
+    <div class="date">12/06/2024</div>
+    <div class="message">
+       <div class="row">
+         <div class="profile-image">
+          <img load="lazy" src="./assets/housefull 3.png">
+        </div>
+         <div class="box">Hi</div>
+       </div>
+       <div class="time">5:30 AM</div>
+    </div>
+    <div class="message">
+       <div class="row">
+         <div class="profile-image">
+          <img load="lazy" src="./assets/housefull 3.png">
+        </div>
+         <div class="box">Hi</div>
+       </div>
+       <div class="time">5:30 AM</div>
+    </div>
+    <div class="message">
+       <div class="row">
+         <div class="profile-image">
+          <img load="lazy" src="./assets/housefull 3.png">
+        </div>
+         <div class="box">Hi</div>
+       </div>
+       <div class="time">5:30 AM</div>
+    </div>
+    <div class="message me">
+       <div class="row">
+         <div class="profile-image">
+          <img load="lazy" src="./assets/housefull 3.png">
+        </div>
+         <div class="box">Hi</div>
+       </div>
+       <div class="time">5:30 AM</div>
+    </div>
+    <div class="date">12/06/2024</div>
+    <div class="message">
+       <div class="row">
+         <div class="profile-image">
+          <img load="lazy" src="./assets/housefull 3.png">
+        </div>
+         <div class="box">Hi</div>
+       </div>
+       <div class="time">5:30 AM</div>
+    </div>
+    <div class="message">
+       <div class="row">
+         <div class="profile-image">
+          <img load="lazy" src="./assets/housefull 3.png">
+        </div>
+         <div class="box">Hi</div>
+       </div>
+       <div class="time">5:30 AM</div>
+    </div>
+    <div class="message">
+       <div class="row">
+         <div class="profile-image">
+          <img load="lazy" src="./assets/housefull 3.png">
+        </div>
+         <div class="box">His name is George. How are you. Just got back from the pub and I was in the car park and I</div>
+       </div>
+       <div class="time">5:30 AM</div>
+    </div>
+    <div class="message me">
+       <div class="row">
+         <div class="profile-image">
+          <img load="lazy" src="./assets/housefull 3.png">
+        </div>
+         <div class="box">His name is George. How are you. Just got back from the pub and I was in the car park and I</div>
+       </div>
+       <div class="time">5:30 AM</div>
+    </div>
+    <div class="message me">
+       <div class="row">
+         <div class="profile-image">
+          <img load="lazy" src="./assets/housefull 3.png">
+        </div>
+         <div class="box">His name is George. How are you</div>
+       </div>
+       <div class="time">5:30 AM</div>
+    </div>
+  </div>
+  <form action="" class="input">
+    <textarea placeholder="Say something..." id="msg"></textarea>
+    <div class="bottom">
+      <div class="left">
+        <i class="fa-solid fa-image"></i>
+        <i class="fa-solid fa-file-video"></i>
+      </div>
+      <div class="right">
+        <i class="fa-solid fa-paper-plane"></i>
+      </div>
+     </div>
+    </div>  
+  </form>
+  <script type="module" class="./js/utils.js"></script>
+  <script type="module" src="./js/conversation.js"></script>
+</body>
+</html>

@@ -50,7 +50,7 @@ function fetchUsers(){
     if(userId==user.id) return;
     return `<div class="user">
       <div class="profile-image">
-        <img src="${user.profilePic}">
+        <img load="lazy" src="${user.profilePic}">
       </div>
       <h3 class="name">${user.name}</h3>
       <button class="start" id='${JSON.stringify(user)}'>Start conversation</button>
@@ -96,7 +96,7 @@ function createConversation(event){
           [profile.id]:{id:profile.id,name:profile.name,profilePic:profile.profilePic},
           [profile2.id]:{id:profile2.id,name:profile2.name,profilePic:profile2.profilePic},
         },
-        messages:[{[profile.id]:"Hi"}]
+        messages:[{id:profile.id,message:"Hi",date:new Date().toLocaleDateString(),time:new Date().toLocaleTimeString()}]
       }
       set(ref(db,"conversations/"+id),conversation).then(()=>{
         
@@ -133,13 +133,28 @@ function createConversation(event){
   })
 }
 
+function minifyConversations(conversations){
+  let minifiedConversations={};
+  Object.entries(conversations).forEach(([key,conversation],index)=>{
+        
+        let users=Object.values(conversation.users);
+        let otherUser=users[0].id===userId?users[1]:users[0];
+       minifiedConversations[key]={
+          id:conversation.id,
+          otherUser
+        };
+      });
+      return minifiedConversations;
+}
+
 function checkForUpdates(){
   let conversationsRef=ref(db,`users/${userId}/conversations`);
   onValue(conversationsRef,(snapshot)=>{
     let updatedConv=snapshot.val();
     console.log("changed...");
     conversations=updatedConv;
-    sessionStorage.setItem("conversations",JSON.stringify(conversations));
+    let minifiedConversations=minifyConversations(conversations);
+      sessionStorage.setItem("conversations",JSON.stringify(minifiedConversations));
   },(err)=>{
     hideLoading();
     showError("Something went wrong!!!");

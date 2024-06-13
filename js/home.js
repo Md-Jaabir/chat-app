@@ -30,7 +30,6 @@ function checkUser(){
       hideLoading();
       getConversations();
     }else{
-      alert("else")
       goTo("./signin.html");
     }
   }).catch(err=>{
@@ -48,11 +47,13 @@ function signout(){
 
 function getConversations(){
   if(conversations){
+    checkForUpdates();
     fetchConversations();
     return;
   }
   get(child(ref(db),"users/"+userId.toString()+"/conversations")).then(snapshot=>{
     if(snapshot.exists()){
+      
       conversations=snapshot.val();
       if(!conversations){
         document.querySelector(".conversations .loading-text").innerHTML="No conversation yet"
@@ -60,7 +61,8 @@ function getConversations(){
       }
       fetchConversations();
       checkForUpdates();
-      sessionStorage.setItem("conversations",JSON.stringify(conversations));
+      let minifiedConversations=minifyConversations(conversations);
+      sessionStorage.setItem("conversations",JSON.stringify(minifiedConversations));
     }else{
       document.querySelector(".conversations .loading-text").innerHTML="No conversation yet";
       hideLoading();
@@ -76,13 +78,18 @@ function getConversations(){
 function fetchConversations(){
   console.log("Updating conversations...");
   let conversationArr=Object.values(conversations);
+  let otherUser;
   conversationArr=conversationArr.reverse();
   conversationContainer.innerHTML=conversationArr.map(conversation=>{
-  let users=Object.values(conversation.users);
-  let otherUser=users[0].id==userId?users[1]:users[0];
+  let users=conversation.users?Object.values(conversation.users):undefined;
+  if(users){
+    otherUser=users[0].id==userId?users[1]:users[0];
+  }else{
+    otherUser=conversation.otherUser;
+  }
     return `<div id=${conversation.id} class="conversation">
       <div class="profile-image">
-        <img src="${otherUser.profilePic}">
+        <img load="lazy" src="${otherUser.profilePic}">
       </div>
       <div class="detail">
         <h3 class="name">${otherUser.name}</h3>
@@ -90,13 +97,28 @@ function fetchConversations(){
       </div>
     </div>`;
   }).join("");
-  document.querySelectorAll(".conversation").forEach(button=>{
+  let conversationElements=Array.from(document.querySelectorAll(".conversation"));
+  conversationElements.forEach((button,index)=>{
     button.addEventListener("click",(event)=>{
-      goTo(`./conversation.html?id=${event.target.id}`);
+      console.log(conversationElements[index].id)
+      goTo(`./conversation.html?id=${conversationElements[index].id}`);
     });
   });
 }
 
+function minifyConversations(conversations){
+  let minifiedConversations={};
+  Object.entries(conversations).forEach(([key,conversation],index)=>{
+        
+        let users=Object.values(conversation.users);
+        let otherUser=users[0].id===userId?users[1]:users[0];
+       minifiedConversations[key]={
+          id:conversation.id,
+          otherUser
+        };
+      });
+      return minifiedConversations;
+}
 
 function checkForUpdates(){
   let conversationsRef=ref(db,`users/${userId}/conversations`);
@@ -105,7 +127,8 @@ function checkForUpdates(){
     console.log("changed...");
     conversations=updatedConv;
     fetchConversations();
-    sessionStorage.setItem("conversations",JSON.stringify(conversations));
+    let minifiedConversations=minifyConversations(conversations);
+      sessionStorage.setItem("conversations",JSON.stringify(minifiedConversations));
   },(err)=>{
     hideLoading();
     showError("Something went wrong!!!");

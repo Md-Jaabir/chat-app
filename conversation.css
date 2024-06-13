@@ -1,0 +1,155 @@
+.top-bar{
+  position: sticky;
+  top: 0;
+  background: white;
+  display: flex;
+  padding: 15px 25px;
+  justify-content: space-between;
+  align-items: center;
+  background: #e7eef0b5;
+}
+
+.top-bar i{
+  font-size: 25px;
+}
+
+.top-bar h2{
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+.top-bar h2 i{
+  font-size: 30px;
+  padding: 0;
+  margin: 0;
+}
+
+.conversation{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+}
+
+ .profile-image{
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-image img{
+  width: 100%;
+}
+
+.conversation .detail{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+
+.messages{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 25px 0 40px 0;
+}
+
+.date{
+  margin-top: 15px;
+  margin-inline: auto;
+  padding: 7px 13px;
+  background: #e1e4e5;
+  border-radius: 15px;
+}
+
+.message{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100vw;
+}
+
+.message .row{
+  display: flex;
+  gap: 7px;
+  margin-left: 20px;
+}
+
+.message .box{
+  padding: 7px 13px;
+  background: #e1e4e5;
+  border-radius: 8px;
+  max-width: 60vw;
+  line-height: 1.5;
+}
+
+.message .profile-image{
+  width: 30px;
+  height: 30px;
+}
+
+.message .time{
+  font-size: 11px;
+  color: #9b9b9b;
+  margin-left: 60px;
+}
+
+.message.me{
+  align-items:flex-end;
+  padding-left: 0;
+}
+
+.message.me .row{
+  margin-left: 0;
+  margin-right: 20px;
+  flex-direction: row-reverse;
+}
+
+.message.me .time{
+  margin-left: 0;
+  margin-right: 60px;
+}
+
+form.input{
+  width: calc(100vw - 40px);
+  padding: 25px 20px 15px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  position: fixed;
+  bottom: 0;
+  background: white;
+  border-top: 1px solid #e5e5e5;
+}
+
+.input #msg{
+  padding: 15px 22px;
+  width: 85%;
+  background: #dce1e2;
+  outline: none;
+  border: none;
+  border-radius:20px ;
+  height: 15px;
+  resize: none;
+}
+
+.input .bottom{
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 10px;
+}
+
+.bottom i{
+  color: #4CA1AF;
+  font-size: 23px;
+}
+
+.bottom .left{
+  display: flex;
+  gap: 15px;
+}
