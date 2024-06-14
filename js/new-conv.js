@@ -1,7 +1,7 @@
 import fns from './utils.js';
 import fireBaseSetup from './firebase-setup.js';
 let {db,get,set,ref,auth,child,push,update,onValue}=fireBaseSetup;
-let {goTo,showError,closeError,loading,hideLoading}=fns;
+let {goTo,showError,closeError,loading,hideLoading,dateString,timeString}=fns;
 let usersCont=document.querySelector(".users");
 let user=JSON.parse(localStorage.getItem("user"));
 let userId=localStorage.getItem("userId");
@@ -96,7 +96,7 @@ function createConversation(event){
           [profile.id]:{id:profile.id,name:profile.name,profilePic:profile.profilePic},
           [profile2.id]:{id:profile2.id,name:profile2.name,profilePic:profile2.profilePic},
         },
-        messages:[{id:profile.id,message:"Hi",date:new Date().toLocaleDateString(),time:new Date().toLocaleTimeString()}]
+        messages:[{id:profile.id,message:"Hi",type:"text",date:dateString(new Date()),time:timeString(new Date())}]
       }
       set(ref(db,"conversations/"+id),conversation).then(()=>{
         

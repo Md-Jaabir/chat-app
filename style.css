@@ -73,7 +73,7 @@ input.err{
 .loading{
   height: 100vh;
   width: 100vw;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   font-size: 35px;
@@ -82,6 +82,7 @@ input.err{
   align-items: center;
   background: #ffffff69;
   z-index: 5;
+  overflow: hidden;
 }
 
 @keyframes spin{

@@ -25,113 +25,35 @@
   <div class="top-bar">
     <div class="conversation">
       <div class="profile-image">
-        <img load="lazy" src="./assets/housefull 3.png">
+        <img load="lazy" src="./assets/placeholder.png">
       </div>
       <div class="detail">
-        <h3 class="name">Jaabir</h3>
-        <p>Not active</p>
+        <h3 class="name">Loading...</h3>
+        <p>loading...</p>
       </div>
     </div>
     <i class="back fa-solid fa-circle-xmark"></i>
   </div>
-  <div class="messages">
-    <div class="date">12/06/2024</div>
-    <div class="message">
-       <div class="row">
-         <div class="profile-image">
-          <img load="lazy" src="./assets/housefull 3.png">
-        </div>
-         <div class="box">Hi</div>
-       </div>
-       <div class="time">5:30 AM</div>
-    </div>
-    <div class="message">
-       <div class="row">
-         <div class="profile-image">
-          <img load="lazy" src="./assets/housefull 3.png">
-        </div>
-         <div class="box">Hi</div>
-       </div>
-       <div class="time">5:30 AM</div>
-    </div>
-    <div class="message">
-       <div class="row">
-         <div class="profile-image">
-          <img load="lazy" src="./assets/housefull 3.png">
-        </div>
-         <div class="box">Hi</div>
-       </div>
-       <div class="time">5:30 AM</div>
-    </div>
-    <div class="message me">
-       <div class="row">
-         <div class="profile-image">
-          <img load="lazy" src="./assets/housefull 3.png">
-        </div>
-         <div class="box">Hi</div>
-       </div>
-       <div class="time">5:30 AM</div>
-    </div>
-    <div class="date">12/06/2024</div>
-    <div class="message">
-       <div class="row">
-         <div class="profile-image">
-          <img load="lazy" src="./assets/housefull 3.png">
-        </div>
-         <div class="box">Hi</div>
-       </div>
-       <div class="time">5:30 AM</div>
-    </div>
-    <div class="message">
-       <div class="row">
-         <div class="profile-image">
-          <img load="lazy" src="./assets/housefull 3.png">
-        </div>
-         <div class="box">Hi</div>
-       </div>
-       <div class="time">5:30 AM</div>
-    </div>
-    <div class="message">
-       <div class="row">
-         <div class="profile-image">
-          <img load="lazy" src="./assets/housefull 3.png">
-        </div>
-         <div class="box">His name is George. How are you. Just got back from the pub and I was in the car park and I</div>
-       </div>
-       <div class="time">5:30 AM</div>
-    </div>
-    <div class="message me">
-       <div class="row">
-         <div class="profile-image">
-          <img load="lazy" src="./assets/housefull 3.png">
-        </div>
-         <div class="box">His name is George. How are you. Just got back from the pub and I was in the car park and I</div>
-       </div>
-       <div class="time">5:30 AM</div>
-    </div>
-    <div class="message me">
-       <div class="row">
-         <div class="profile-image">
-          <img load="lazy" src="./assets/housefull 3.png">
-        </div>
-         <div class="box">His name is George. How are you</div>
-       </div>
-       <div class="time">5:30 AM</div>
-    </div>
-  </div>
+  <div class="messages"></div>
   <form action="" class="input">
     <textarea placeholder="Say something..." id="msg"></textarea>
     <div class="bottom">
       <div class="left">
-        <i class="fa-solid fa-image"></i>
+        <i id="image-selection" class="fa-solid fa-image"></i>
         <i class="fa-solid fa-file-video"></i>
       </div>
       <div class="right">
-        <i class="fa-solid fa-paper-plane"></i>
+        <button type="submit" class="invisible"><i id="send" class="fa-solid fa-paper-plane"></i></button>
       </div>
      </div>
     </div>  
   </form>
+  <div class="preview">
+    <div class="box">
+      <img src="" alt="">
+      <button><i class="fa-solid fa-paper-plane"></i>Send</button>
+    </div>
+  </div>
   <script type="module" class="./js/utils.js"></script>
   <script type="module" src="./js/conversation.js"></script>
 </body>

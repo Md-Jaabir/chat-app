@@ -76,9 +76,7 @@ function signup(){
   })
 }
 
-function dataUrl(){
-  let file=profilePicInput.files[0];
-  console.log(file);
+function dataUrl(file){
   let reader=new FileReader();
   reader.addEventListener("load",()=>{
     url=reader.result;
@@ -86,7 +84,8 @@ function dataUrl(){
   reader.readAsDataURL(file);
 }
 
-profilePicInput.onchange=dataUrl;
+
+profilePicInput.onchange=()=>{dataUrl(profilePicInput.files[0])};
 
 function showInputError(msg,input){
   showError(msg);

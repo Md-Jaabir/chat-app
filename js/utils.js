@@ -18,10 +18,22 @@ function closeError(){
 function loading(){
   const loadingScreen=document.querySelector(".loading");
   loadingScreen.style.display="flex";
+  document.body.style.overflow="hidden";
 }
 function hideLoading(){
   const loadingScreen=document.querySelector(".loading");
   loadingScreen.style.display="none";
+  document.body.style.overflow="auto";
 }
 
-export default {goTo,showError,closeError,loading,hideLoading}
+
+
+function dateString(date){
+  return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
+}
+
+function timeString(date){
+  return `${date.getHours()>12?date.getHours()-12:date.getHours()}:${date.getMinutes()} ${date.getHours()>12?"PM":"AM"}`;
+}
+
+export default {goTo,showError,closeError,loading,hideLoading,dateString,timeString}
