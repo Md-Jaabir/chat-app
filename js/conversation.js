@@ -1,7 +1,7 @@
 import fireBaseSetup from './firebase-setup.js';
 import fns from './utils.js';
 let { db, get, set, ref, auth, child, onValue } = fireBaseSetup;
-let { goTo, showError, closeError, loading, hideLoading, dateString, timeString } = fns;
+let { goTo, showError, closeError, loading, hideLoading, dateString, timeString,convertLinks } = fns;
 let id = location.search.split("=")[1];
 let messageContainer = document.querySelector(".messages");
 let userId = localStorage.getItem("userId");
@@ -10,10 +10,14 @@ let otherUser;
 let date="00/00/00";
 let msgForm = document.querySelector("form.input");
 let url;
+let notificationSound=new Audio("../assets/notification.mp3")
 msgForm.addEventListener("submit", (e) => {
   e.preventDefault();
   addMessage();
-})
+});
+let notificationSound2=new Audio('../assets/messagenote.mp3');
+let calls2=0;
+let calls=0;
 
 
 document.querySelector(".back").addEventListener("click", () => { goTo("./index.html") });
@@ -21,6 +25,7 @@ document.querySelector("#image-selection").addEventListener("click", chooseImage
 document.querySelector(".preview button").addEventListener("click", addImage);
 getConversation();
 checkForUpdates();
+console.log(convertLinks("Hello from "));
 
 function getConversation() {
   loading();
@@ -69,7 +74,10 @@ function fetchMessages() {
        <div class="time">${message.time}</div>
     </div>`;
   }).join("");
-  window.scrollTo(0, parseFloat(getComputedStyle(messageContainer).getPropertyValue("height")));
+  setTimeout(()=>{
+    window.scrollTo(0, parseFloat(getComputedStyle(messageContainer).getPropertyValue("height")));
+  },500)
+  
 }
 function addMessage() {
 
@@ -78,7 +86,7 @@ function addMessage() {
     showError("Please type something to send");
     return;
   }
-  let messageObj = { id: userId, message: msg,type:"text", date: dateString(new Date()), time: timeString(new Date()) }
+  let messageObj = { id: userId, message: convertLinks(msg),type:"text", date: dateString(new Date()), time: timeString(new Date()) }
   conversation.messages.push(messageObj);
   fetchMessages();
   document.getElementById("msg").value = "";
@@ -104,8 +112,13 @@ function minifyConversations(conversations) {
 
 function checkForUpdates() {
   let conversationsRef = ref(db, `users/${userId}/conversations`);
+  
   onValue(conversationsRef, (snapshot) => {
     let updatedConv = snapshot.val();
+    if(calls2<0){
+      notificationSound2.play();
+    }
+    calls2++;
     let minifiedConversations = minifyConversations(updatedConv);
     sessionStorage.setItem("conversations", JSON.stringify(minifiedConversations));
   }, (err) => {
@@ -119,6 +132,10 @@ function onMessage() {
   let messageRef = ref(db, "conversations/" + id + "/messages/");
   onValue(messageRef, (snapshot) => {
     let messages = snapshot.val();
+    if(messages[messages.length-1].id!=userId && calls !=0){
+      notificationSound.play();
+    }
+    calls++;
     if (messages.length == conversation.messages.length) {
     } else {
       conversation.messages = messages;
@@ -139,6 +156,10 @@ function chooseImage(){
   chooseFile.click();
   chooseFile.onchange=(event)=>{
     let file=event.target.files[0];
+    if(file.type!="image/png" && file.type!="image/jpg" && file.type!="image/jpeg"){
+      showError("Please select a valid image!!!");
+      return;
+    }
     let reader=new FileReader();
     reader.addEventListener("load",()=>{
       url=reader.result;
@@ -163,3 +184,4 @@ function addImage(){
     console.log(err);
   })
 }
+

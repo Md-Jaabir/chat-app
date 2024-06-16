@@ -3,14 +3,17 @@ import fireBaseSetup from './firebase-setup.js';
 let {db,get,set,ref,auth,child,push,update,onValue}=fireBaseSetup;
 let {goTo,showError,closeError,loading,hideLoading,dateString,timeString}=fns;
 let usersCont=document.querySelector(".users");
+let searchForm=document.querySelector("form.search");
 let user=JSON.parse(localStorage.getItem("user"));
 let userId=localStorage.getItem("userId");
 let conversations=JSON.parse(sessionStorage.getItem("conversations"));
 let users;
+let notificationSound2=new Audio('../assets/messagenote.mp3');
+let calls=0;
 checkUser();
 checkForUpdates();
 document.querySelector(".back").addEventListener("click",()=>{goTo("./index.html")});
-
+searchForm.addEventListener("submit",filterUsers);
 function checkUser(){
   loading();
   if(!userId || !user){
@@ -24,7 +27,7 @@ function getUsers(){
   get(child(ref(db),"users/")).then(snapshot=>{
     if(snapshot.exists()){
       users=snapshot.val();
-      fetchUsers();
+      fetchUsers(users);
     }else{
       hideLoading();
       showError("Something went wrong!!!");
@@ -36,7 +39,7 @@ function getUsers(){
   });
 }
 
-function fetchUsers(){
+function fetchUsers(users){
   let sortedUsers=Object.values(users).sort(function (a, b) {
   if (a.name < b.name) {
     return -1;
@@ -135,6 +138,7 @@ function createConversation(event){
 
 function minifyConversations(conversations){
   let minifiedConversations={};
+  if(!conversations) return;
   Object.entries(conversations).forEach(([key,conversation],index)=>{
         
         let users=Object.values(conversation.users);
@@ -149,8 +153,13 @@ function minifyConversations(conversations){
 
 function checkForUpdates(){
   let conversationsRef=ref(db,`users/${userId}/conversations`);
+  
   onValue(conversationsRef,(snapshot)=>{
     let updatedConv=snapshot.val();
+    if(calls<0){
+      notificationSound2.play();
+    }
+    calls++;
     console.log("changed...");
     conversations=updatedConv;
     let minifiedConversations=minifyConversations(conversations);
@@ -160,4 +169,17 @@ function checkForUpdates(){
     showError("Something went wrong!!!");
     console.log(err);
   });
+}
+
+function filterUsers(event){
+  event.preventDefault();
+  let query=document.querySelector("form.search input").value;
+  if(!users){
+    showError("Let the users load!!!");
+    return;
+  }
+  let filteredArr=Object.values(users).filter(user=>{
+    return user.name.toLowerCase().includes(query.toLowerCase());
+  });
+  fetchUsers(filteredArr)
 }

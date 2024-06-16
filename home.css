@@ -93,6 +93,11 @@ form.search{
   gap: 10px;
 }
 
+.conversation .detail h3,.conversation .detail p{
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .conversation:active{
   background: #e8eaeb;
   transition: .5s linear;

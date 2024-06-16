@@ -31,6 +31,10 @@
   cursor: pointer;
 }
 
+.top-bar .profile-image{
+  border: 2px solid #4CA1AF;
+}
+
  .profile-image{
   height: 50px;
   width: 50px;
@@ -85,10 +89,17 @@
   background: #e1e4e5;
   border-radius: 8px;
   max-width: 60vw;
-  line-height: 1.5;
   display: flex;
   justify-content: center;
   align-items: center;
+  line-height: 1.5;
+  overflow-x: auto;
+}
+
+.message .box a{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: #0a7d0c;
 }
 
 .message .box.image{

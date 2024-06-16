@@ -1,15 +1,23 @@
 import fns from './utils.js';
 import fireBaseSetup from './firebase-setup.js';
-let {db,get,set,ref,auth,child,onValue}=fireBaseSetup;
+let {db,get,set,ref,update,auth,child,onValue}=fireBaseSetup;
 let {goTo,showError,closeError,loading,hideLoading}=fns;
 let logoutButton=document.querySelector(".logout");
 let conversationContainer=document.querySelector(".conversations");
+let searchForm=document.querySelector("form.search");
 let user;
 let conversations=JSON.parse(sessionStorage.getItem("conversations"));
 let userId=localStorage.getItem("userId");
 document.querySelector(".new-conv").onclick=()=>{goTo('./new-conv.html')}
-logoutButton.addEventListener("click",signout)
+logoutButton.addEventListener("click",signout);
+let notificationSound=new Audio('../assets/notification.mp3');
+let notificationSound2=new Audio('../assets/messagenote.mp3');
+let calls=0;
+searchForm.addEventListener("submit",filterConversations);
+
 checkUser();
+
+
 function checkUser(){
   loading();
   
@@ -48,7 +56,7 @@ function signout(){
 function getConversations(){
   if(conversations){
     checkForUpdates();
-    fetchConversations();
+    fetchConversations(conversations);
     return;
   }
   get(child(ref(db),"users/"+userId.toString()+"/conversations")).then(snapshot=>{
@@ -59,7 +67,7 @@ function getConversations(){
         document.querySelector(".conversations .loading-text").innerHTML="No conversation yet"
         return;
       }
-      fetchConversations();
+      fetchConversations(conversations);
       checkForUpdates();
       let minifiedConversations=minifyConversations(conversations);
       sessionStorage.setItem("conversations",JSON.stringify(minifiedConversations));
@@ -75,7 +83,7 @@ function getConversations(){
   })
 }
 
-function fetchConversations(){
+function fetchConversations(conversations){
   console.log("Updating conversations...");
   let conversationArr=Object.values(conversations);
   let otherUser;
@@ -87,16 +95,57 @@ function fetchConversations(){
   }else{
     otherUser=conversation.otherUser;
   }
+  get(child(ref(db),`conversations/${conversation.id}/messages`)).then((snapshot)=>{
+    if(snapshot.val()){
+      let messages=snapshot.val();
+      let messageArr=Object.values(messages);
+      let msg=messageArr[messageArr.length-1];
+      
+      if(msg.type=='image'){
+        document.querySelector(`#${conversation.id} .last-msg`).innerHTML=(msg.id==userId?"You":"He")+" sent an image";
+      }else{
+        document.querySelector(`#${conversation.id} .last-msg`).innerHTML=(msg.id==userId?"You:":"He:")+" "+msg.message.substring(0,30);
+      }
+      
+    }
+  }).catch((err)=>{
+    console.log(err)
+    document.querySelector(`#${conversation.id} .last-msg`).innerHTML="An error occured!!!";
+  });
+  onValue(ref(db,`conversations/${conversation.id}/messages`),(snapshot)=>{
+    if(snapshot.val()){
+      let messages=snapshot.val();
+      let messageArr=Object.values(messages);
+      let msg=messageArr[messageArr.length-1];
+      let previousVal=document.querySelector(`#${conversation.id} .last-msg`).innerHTML;
+      if(msg.type=='image'){
+        document.querySelector(`#${conversation.id} .last-msg`).innerHTML=(msg.id==userId?"You":"He")+" sent an image";
+      }else{
+        document.querySelector(`#${conversation.id} .last-msg`).innerHTML=(msg.id==userId?"You:":"He:")+" "+msg.message.substring(0,30);
+      }
+      
+      let newVal=document.querySelector(`#${conversation.id} .last-msg`).innerHTML;
+      console.log(previousVal,newVal)
+      if(previousVal!="Loading..." && previousVal!=newVal){
+        notificationSound.play();
+      }
+    }
+  },(err)=>{
+    console.log(err)
+    document.querySelector(`#${conversation.id} .last-msg`).innerHTML="An error occured!!!";
+  });
+
     return `<div id=${conversation.id} class="conversation">
       <div class="profile-image">
         <img load="lazy" src="${otherUser.profilePic}">
       </div>
       <div class="detail">
         <h3 class="name">${otherUser.name}</h3>
-        <p>Not active</p>
+        <p class="last-msg">Loading...</p>
       </div>
     </div>`;
   }).join("");
+  
   let conversationElements=Array.from(document.querySelectorAll(".conversation"));
   conversationElements.forEach((button,index)=>{
     button.addEventListener("click",(event)=>{
@@ -122,11 +171,16 @@ function minifyConversations(conversations){
 
 function checkForUpdates(){
   let conversationsRef=ref(db,`users/${userId}/conversations`);
+  
   onValue(conversationsRef,(snapshot)=>{
     let updatedConv=snapshot.val();
+    if(calls>0){
+      notificationSound2.play();
+    }
+    calls++;
     console.log("changed...");
     conversations=updatedConv;
-    fetchConversations();
+    fetchConversations(conversations);
     let minifiedConversations=minifyConversations(conversations);
       sessionStorage.setItem("conversations",JSON.stringify(minifiedConversations));
   },(err)=>{
@@ -134,4 +188,19 @@ function checkForUpdates(){
     showError("Something went wrong!!!");
     console.log(err);
   });
+}
+
+function filterConversations(event){
+  event.preventDefault();
+  let query=document.querySelector("form.search input").value;
+  if(!conversations){
+    showError("Let the conversations load!!!");
+    return;
+  }
+  let filteredArr=Object.values(conversations).filter(conversation=>{
+    let users=Object.values(conversation.users);
+    let otherUser=users[0].id==userId?users[1]:users[0];
+    return otherUser.name.toLowerCase().includes(query.toLowerCase());
+  });
+  fetchConversations(filteredArr)
 }

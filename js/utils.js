@@ -26,7 +26,26 @@ function hideLoading(){
   document.body.style.overflow="auto";
 }
 
-
+function convertLinks(str){
+  let links=[];
+  let copyStr=str;
+  loop(str);
+  function loop(str){
+    let linkRegEx=/(https)?:\/\/[^\s]+/
+    let matches=str.match(linkRegEx);
+    if(matches){
+      links.push(matches[0]);
+      str=str.replace(matches[0],"");
+      loop(str);
+    }else{
+      return;
+    }
+  }
+  links.forEach(link=>{
+    copyStr=copyStr.replace(link,`<a href='${link}'>${link}</a>`)
+  })
+  return copyStr;
+}
 
 function dateString(date){
   return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
@@ -36,4 +55,4 @@ function timeString(date){
   return `${date.getHours()>12?date.getHours()-12:date.getHours()}:${date.getMinutes()} ${date.getHours()>12?"PM":"AM"}`;
 }
 
-export default {goTo,showError,closeError,loading,hideLoading,dateString,timeString}
+export default {goTo,showError,closeError,loading,hideLoading,dateString,timeString,convertLinks}
