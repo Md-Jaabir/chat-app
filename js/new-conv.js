@@ -156,7 +156,7 @@ function checkForUpdates(){
   
   onValue(conversationsRef,(snapshot)=>{
     let updatedConv=snapshot.val();
-    if(calls<0){
+    if(calls!=0){
       notificationSound2.play();
     }
     calls++;
