@@ -1,5 +1,6 @@
 import fireBaseSetup from './firebase-setup.js';
 import fns from './utils.js';
+import {nanoid} from 'https://cdnjs.cloudflare.com/ajax/libs/nanoid/5.0.7/index.browser.js';
 let { db, get, set, ref, auth, child, onValue } = fireBaseSetup;
 let { goTo, showError, closeError, loading, hideLoading, dateString, timeString,convertLinks } = fns;
 let id = location.search.split("=")[1];
@@ -56,14 +57,16 @@ function setTopBar() {
       </div>`;
 }
 function fetchMessages() {
-  messageContainer.innerHTML = conversation.messages.map(message => {
-    let putDate = true;
-    if (date == message.date) {
-      putDate = false;
+  messageContainer.innerHTML = Object.values(conversation.messages).map(message => {
+    let putDate = false;
+    if(message.date){
+      if (dateString(date) == dateString(message.date)) {
+        putDate = false;
+      }
     }
 
     date = message.date;
-    return `${putDate ? "<div class='date'>" + message.date + "</div>" : ""} 
+    return `${putDate ? "<div class='date'>" + dateString(message.date) + "</div>" : ""} 
         <div class="message ${message.id == userId ? "me" : ""}">
        <div class="row">
          <div class="profile-image">
@@ -71,7 +74,7 @@ function fetchMessages() {
         </div>
          <div class="box ${message.type}">${message.message}</div>
        </div>
-       <div class="time">${message.time}</div>
+       <div class="time">${message.date && timeString(message.date)}</div>
     </div>`;
   }).join("");
   setTimeout(()=>{
@@ -80,17 +83,17 @@ function fetchMessages() {
   
 }
 function addMessage() {
-
+  let msgId=nanoid();
   let msg = document.getElementById("msg").value;
   if (msg == "") {
     showError("Please type something to send");
     return;
   }
-  let messageObj = { id: userId, message: convertLinks(msg),type:"text", date: dateString(new Date()), time: timeString(new Date()) }
-  conversation.messages.push(messageObj);
+  let messageObj = {_id:msgId, id: userId, message: convertLinks(msg),type:"text", date: Date.now() }
+  conversation.messages[msgId]=messageObj;
   fetchMessages();
   document.getElementById("msg").value = "";
-  set(ref(db, "conversations/" + id + "/messages/" + conversation.messages.length), messageObj).then().catch(err => {
+  set(ref(db, "conversations/" + id + "/messages/" + msgId), messageObj).then().catch(err => {
     showError("Something went wrong!!!");
     console.log(err);
   })
@@ -115,7 +118,7 @@ function checkForUpdates() {
   
   onValue(conversationsRef, (snapshot) => {
     let updatedConv = snapshot.val();
-    if(calls2!-0){
+    if(calls2!=0){
       notificationSound2.play();
     }
     calls2++;
@@ -132,14 +135,16 @@ function onMessage() {
   let messageRef = ref(db, "conversations/" + id + "/messages/");
   onValue(messageRef, (snapshot) => {
     let messages = snapshot.val();
-    if(messages[messages.length-1].id!=userId && calls !=0){
+    let messagesArr=Object.values(messages);
+    console.log(messagesArr);
+    if(messagesArr[messagesArr.length-1].id!=userId && calls !=0){
       notificationSound.play();
     }
     calls++;
-    if (messages.length == conversation.messages.length) {
+    if (messagesArr.length == Object.values(conversation.messages).length) {
     } else {
       conversation.messages = messages;
-      date="";
+      date="00/00/00";
       fetchMessages();
     }
   }, (err) => {
@@ -173,13 +178,14 @@ function chooseImage(){
 }
 
 function addImage(){
-  let messageObj = { id: userId, message: `<img class="msg-img" src="${url}" alt="">`,type:"image", date: dateString(new Date()), time: timeString(new Date()) }
-  conversation.messages.push(messageObj);
+  let msgId=nanoid();
+  let messageObj = {_id:msgId, id: userId, message: `<img class="msg-img" src="${url}" alt="">`,type:"image",date:Date.now() }
+  conversation.messages[msgId]=messageObj;
   fetchMessages();
   document.querySelector(".preview").style.display="none";
   document.body.style.overflow="auto";
   document.getElementById("msg").value = "";
-  set(ref(db, "conversations/" + id + "/messages/" + conversation.messages.length), messageObj).then().catch(err => {
+  set(ref(db, "conversations/" + id + "/messages/" + msgId), messageObj).then().catch(err => {
     showError("Something went wrong!!!");
     console.log(err);
   })

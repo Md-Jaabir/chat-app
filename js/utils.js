@@ -47,11 +47,13 @@ function convertLinks(str){
   return copyStr;
 }
 
-function dateString(date){
+function dateString(dt){
+  let date=new Date(dt);
   return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
 }
 
-function timeString(date){
+function timeString(dt){
+  let date=new Date(dt);
   return `${date.getHours()>12?date.getHours()-12:date.getHours()}:${date.getMinutes()} ${date.getHours()>12?"PM":"AM"}`;
 }
 

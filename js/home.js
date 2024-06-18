@@ -17,7 +17,6 @@ searchForm.addEventListener("submit",filterConversations);
 
 checkUser();
 
-
 function checkUser(){
   loading();
   
@@ -116,6 +115,7 @@ function fetchConversations(conversations){
     if(snapshot.val()){
       let messages=snapshot.val();
       let messageArr=Object.values(messages);
+      console.log(messageArr);
       let msg=messageArr[messageArr.length-1];
       let previousVal=document.querySelector(`#${conversation.id} .last-msg`).innerHTML;
       if(msg.type=='image'){

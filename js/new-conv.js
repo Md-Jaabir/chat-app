@@ -1,5 +1,6 @@
 import fns from './utils.js';
 import fireBaseSetup from './firebase-setup.js';
+import {nanoid} from 'https://cdnjs.cloudflare.com/ajax/libs/nanoid/5.0.7/index.browser.js';
 let {db,get,set,ref,auth,child,push,update,onValue}=fireBaseSetup;
 let {goTo,showError,closeError,loading,hideLoading,dateString,timeString}=fns;
 let usersCont=document.querySelector(".users");
@@ -92,6 +93,7 @@ function createConversation(event){
     
     if(snapshot.exists()){
       profile=snapshot.val();
+      let msgId=nanoid();
       let id=push(child(ref(db), 'posts')).key;
       let conversation={
         id,
@@ -99,7 +101,7 @@ function createConversation(event){
           [profile.id]:{id:profile.id,name:profile.name,profilePic:profile.profilePic},
           [profile2.id]:{id:profile2.id,name:profile2.name,profilePic:profile2.profilePic},
         },
-        messages:[{id:profile.id,message:"Hi",type:"text",date:dateString(new Date()),time:timeString(new Date())}]
+        messages:{[msgId]:{_id:msgId,id:profile.id,message:"Hi",type:"text",date:Date.now()}}
       }
       set(ref(db,"conversations/"+id),conversation).then(()=>{
         
