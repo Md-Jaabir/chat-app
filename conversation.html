@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+    rel="stylesheet">
   <script src="./js/fontawesome.js"></script>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="conversation.css">
   <title>Chat</title>
 </head>
+
 <body class="conversation-cont">
   <div class="loading">
     <i class="fa-regular fa-compass"></i>
   </div>
   <div class="error">
-   <p class="msg">Something went wrong</p> 
-   <button class="close" >
-     <i class="fa-solid fa-close"></i>
-   </button>
+    <p class="msg">Something went wrong</p>
+    <button class="close">
+      <i class="fa-solid fa-close"></i>
+    </button>
   </div>
   <div class="top-bar">
     <div class="conversation">
@@ -29,7 +33,7 @@
       </div>
       <div class="detail">
         <h3 class="name">Loading...</h3>
-        <p>loading...</p>
+        <p class="active-status">loading...</p>
       </div>
     </div>
     <i class="back fa-solid fa-circle-xmark"></i>
@@ -45,8 +49,8 @@
       <div class="right">
         <button type="submit" class="invisible"><i id="send" class="fa-solid fa-paper-plane"></i></button>
       </div>
-     </div>
-    </div>  
+    </div>
+    </div>
   </form>
   <div class="preview">
     <div class="box">
@@ -57,4 +61,5 @@
   <script type="module" class="./js/utils.js"></script>
   <script type="module" src="./js/conversation.js"></script>
 </body>
+
 </html>

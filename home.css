@@ -1,4 +1,4 @@
-.top-bar{
+.top-bar {
   position: sticky;
   top: 0;
   background: white;
@@ -8,28 +8,30 @@
   align-items: center;
 }
 
-.top-bar i{
+.top-bar i {
   font-size: 25px;
+  color: #4CA1AF;
 }
 
-.top-bar h2{
+.top-bar h2 {
   display: flex;
   align-items: flex-end;
   gap: 8px;
 }
-.top-bar h2 i{
+
+.top-bar h2 i {
   font-size: 30px;
   padding: 0;
   margin: 0;
 }
 
-.top-bar .buttons{
+.top-bar .buttons {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-form.search{
+form.search {
   position: sticky;
   top: 85px;
   background: white;
@@ -40,16 +42,16 @@ form.search{
   margin-top: 15px;
 }
 
-.search input{
+.search input {
   padding: 11px 22px;
   width: 85%;
   background: #dce1e2;
   outline: none;
   border: none;
-  border-radius:20px ;
+  border-radius: 20px;
 }
 
-.conversations{
+.conversations {
   display: flex;
   flex-direction: column;
   padding: 15px 0;
@@ -59,20 +61,20 @@ form.search{
   min-height: 60vh;
 }
 
-.conversations .loading-text{
+.conversations .loading-text {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 
-.conversation{
+.conversation {
   display: flex;
   gap: 15px;
-  padding:10px 25px;
+  padding: 10px 25px;
 }
 
-.conversation .profile-image{
+.conversation .profile-image {
   height: 60px;
   width: 60px;
   border-radius: 50%;
@@ -80,25 +82,38 @@ form.search{
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 3px solid #4CA1AF;
 }
 
-.profile-image img{
+.profile-image img {
   width: 100%;
 }
 
-.conversation .detail{
+.conversation .detail {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 10px;
 }
 
-.conversation .detail h3,.conversation .detail p{
+.conversation .detail h3,
+.conversation .detail p {
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.conversation:active{
+.conversation:active {
   background: #e8eaeb;
   transition: .5s linear;
+}
+
+.bold {
+  font-weight: bolder;
+}
+
+.conversation .active-indicator {
+  display: none;
+  color: #0ec608;
+  margin-left: 7px;
+  font-size: 17px;
 }

@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+    rel="stylesheet">
   <script src="./js/fontawesome.js"></script>
   <link rel="stylesheet" href="style.css">
   <title>Sign up</title>
 </head>
+
 <body class="signup">
   <div class="loading">
     <i class="fa-regular fa-compass"></i>
   </div>
   <div class="error">
-   <p class="msg">Something went wrong</p> 
-   <button class="close" >
-     <i class="fa-solid fa-close"></i>
-   </button>
+    <p class="msg">Something went wrong</p>
+    <button class="close">
+      <i class="fa-solid fa-close"></i>
+    </button>
   </div>
   <h2>Sign Up</h2>
   <p>Create an account</p>
@@ -31,13 +35,14 @@
     <input type="file" name="profile-pic" id="profile-pic">
     <button type="submit" class="sign-up">Sign up</button>
   </form>
-    <p class="already">Already have an account? <a href="./signin.html"> Sign in</a></p>
-    <script>
-      if(localStorage.getItem("userId")){
-        console.log(localStorage.getItem("userId"));
-       location.href="./index.html";
-      }
-    </script>
-    <script type="module" src="./js/script.js"></script>
+  <p class="already">Already have an account? <a href="./signin.html"> Sign in</a></p>
+  <script>
+    if (localStorage.getItem("userId")) {
+      console.log(localStorage.getItem("userId"));
+      location.href = "./index.html";
+    }
+  </script>
+  <script type="module" src="./js/script.js"></script>
 </body>
+
 </html>
