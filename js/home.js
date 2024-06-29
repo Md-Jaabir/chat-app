@@ -7,7 +7,7 @@ let conversationContainer = document.querySelector(".conversations");
 let searchForm = document.querySelector("form.search");
 let user;
 let activeStatus = {};
-let conversations = JSON.parse(sessionStorage.getItem("conversations"));
+let conversations = sessionStorage.getItem("conversations") == "undefined" ? {}: JSON.parse(sessionStorage.getItem("conversations"));
 let userId = localStorage.getItem("userId");
 document.querySelector(".new-conv").onclick = () => { goTo('./new-conv.html') }
 logoutButton.addEventListener("click", signout);
@@ -68,7 +68,7 @@ function signout() {
 }
 
 function getConversations() {
-  if (conversations) {
+  if (conversations && Object.values(conversations).length>0) {
     checkForUpdates();
     fetchConversations(conversations);
 
@@ -78,7 +78,7 @@ function getConversations() {
     if (snapshot.exists()) {
 
       conversations = snapshot.val();
-      if (!conversations) {
+      if (!conversations || Object.values(conversations).length==0) {
         document.querySelector(".conversations .loading-text").innerHTML = "No conversation yet"
         return;
       }
@@ -102,6 +102,10 @@ function fetchConversations(conversations) {
   let conversationArr = Object.values(conversations);
   let otherUser;
   conversationArr = conversationArr.reverse();
+  if(conversationArr.length==0){
+    document.querySelector(".conversations .loading-text").innerHTML = "No conversation yet"
+    return;
+  }
   conversationContainer.innerHTML = conversationArr.map(conversation => {
     let users = conversation.users ? Object.values(conversation.users) : undefined;
     if (users) {
