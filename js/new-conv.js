@@ -7,7 +7,7 @@ let usersCont = document.querySelector(".users");
 let searchForm = document.querySelector("form.search");
 let user = JSON.parse(localStorage.getItem("user"));
 let userId = localStorage.getItem("userId");
-let conversations = JSON.parse(sessionStorage.getItem("conversations"));
+let conversations = sessionStorage.getItem("conversations") == "undefined" ? {} : JSON.parse(sessionStorage.getItem("conversations"));
 let users;
 let notificationSound2 = new Audio('../assets/messagenote.mp3');
 let calls = 0;
@@ -68,16 +68,13 @@ function fetchUsers(users) {
 
 function createConversation(event) {
   loading();
-  console.log("creating...")
   let profile;
   let profile2 = JSON.parse(event.target.id);
   let alreadyHas = false;
 
   profile2.conversations && Object.values(profile2.conversations).forEach(con => {
-    console.log(con)
     if (con.users) {
       let ids = Object.keys(con.users);
-      console.log(ids);
       if (ids[0] == userId || ids[1] == userId) {
         alreadyHas = true;
       }
@@ -163,7 +160,6 @@ function checkForUpdates() {
       notificationSound2.play();
     }
     calls++;
-    console.log("changed...");
     conversations = updatedConv;
     let minifiedConversations = minifyConversations(conversations);
     sessionStorage.setItem("conversations", JSON.stringify(minifiedConversations));
