@@ -1,52 +1,23 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-analytics.js";
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js'
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCDzIBns3Pw1KNcvU5DquPC4IsnbMbYucw",
+    authDomain: "fly-chat-ea6a1.firebaseapp.com",
+    databaseURL: "https://fly-chat-ea6a1-default-rtdb.firebaseio.com",
+    projectId: "fly-chat-ea6a1",
+    storageBucket: "fly-chat-ea6a1.firebasestorage.app",
+    messagingSenderId: "742719901155",
+    appId: "1:742719901155:web:2d766ee365e8cc1788a4d6",
+    measurementId: "G-VYRLPNTKVP"
+  };
 
-import { getDatabase, get, set, ref, child, push, update, onValue, remove } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js'
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAZ0dZ1BWE_GLs7J0LosBTV3P_47aSl_Xs",
-  authDomain: "flychat-e6057.firebaseapp.com",
-  databaseURL: "https://flychat-e6057-default-rtdb.firebaseio.com",
-  projectId: "flychat-e6057",
-  storageBucket: "flychat-e6057.appspot.com",
-  messagingSenderId: "932936050775",
-  appId: "1:932936050775:web:d81eab16d975a788a91b12",
-  measurementId: "G-R78N03BNZH",
-  realTimeDatabase: "https://flychat-e6057-default-rtdb.firebaseio.com"
-};
-
-
-
-// Initialize Firebase
-
-const app = initializeApp(firebaseConfig);
-
-const analytics = getAnalytics(app);
-
-const db = getDatabase();
-
-const dbref = ref(db);
-
-const auth = getAuth(app);
-
-
-
-function setActiveTime(userId) {
-  let updates = {};
-  updates[`users/${userId}/lastActive`] = Date.now();
-  update(ref(db), updates).then(data => {
-    console.log(data);
-  });
-  setInterval(() => {
-    let date = Date.now();
-    updates[`users/${userId}/lastActive`] = userId + "/" + date;
-    update(ref(db), updates).then(data => {
-
-    });
-  }, 15000);
-}
-
-export default { db, get, set, ref, onValue, auth, child, push, update, signInWithEmailAndPassword, createUserWithEmailAndPassword, setActiveTime, remove };
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
